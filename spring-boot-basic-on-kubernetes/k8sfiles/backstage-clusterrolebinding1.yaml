@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: backstage-clusterrolebinding
+subjects:
+  - kind: ServiceAccount
+    name: backstage-sa
+    namespace: default  # Change if `backstage-sa` is in another namespace
+roleRef:
+  kind: ClusterRole
+  name: backstage-clusterrole
+  apiGroup: rbac.authorization.k8s.io

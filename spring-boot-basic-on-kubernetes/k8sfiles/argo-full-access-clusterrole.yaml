@@ -1,0 +1,33 @@
+# Role with permissions to list workflows
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: argo-full-access
+rules:
+  - apiGroups: ["argoproj.io"]
+    resources: ["*"]  # Grants access to all resources in the API group
+    verbs: ["*"]      # Grants all actions: create, get, list, update, delete, etc.
+  - apiGroups: [""]
+    resources: ["configmaps", "pods", "pods/log", "secrets", "services"]
+    verbs: ["*"]
+  - apiGroups: ["rbac.authorization.k8s.io"]
+    resources: ["roles", "rolebindings", "clusterroles", "clusterrolebindings"]
+    verbs: ["*"]
+  - apiGroups: ["events.k8s.io"]
+    resources: ["events"]
+    verbs: ["*"]
+
+---
+# RoleBinding for the service account
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: argo-full-access-binding
+subjects:
+  - kind: ServiceAccount
+    name: jenkins
+    namespace: default  # Namespace of the jenkins service account
+roleRef:
+  kind: ClusterRole
+  name: argo-full-access
+  apiGroup: rbac.authorization.k8s.io

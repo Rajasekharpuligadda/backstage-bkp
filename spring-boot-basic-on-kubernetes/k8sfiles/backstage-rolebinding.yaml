@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: backstage-rolebinding
+  namespace: argocd-demo  # Change to the correct namespace
+subjects:
+  - kind: ServiceAccount
+    name: backstage-sa
+    namespace: default  # Change if the service account is in another namespace
+roleRef:
+  kind: Role
+  name: backstage-role
+  apiGroup: rbac.authorization.k8s.io
